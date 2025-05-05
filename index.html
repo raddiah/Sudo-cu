@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudo Credit Union - Online Banking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Modal (shown by default) -->
+    <div class="modal" id="loginModal" style="display: flex;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sign In to Sudo Credit Union</h3>
+                <button class="close-modal" onclick="closeModal('loginModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" class="form-control" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+                    </div>
+                    <div class="form-group text-center">
+                        <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <p>Don't have an account? <a href="#" onclick="showRegister()">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Banking Interface (hidden until login) -->
+    <div id="bankingInterface" style="display: none;">
+        <header>
+            <div class="container header-container">
+                <div class="logo">
+                    <img src="logo.png" alt="Sudo Credit Union Logo">
+                    <h1>Sudo <span>Credit Union</span></h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" onclick="showTab('dashboard')"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#" onclick="showTab('accounts')"><i class="fas fa-wallet"></i> Accounts</a></li>
+                        <li><a href="#" onclick="showTab('transfer')"><i class="fas fa-exchange-alt"></i> Transfer</a></li>
+                        <li><a href="#" onclick="showTab('zelle')"><i class="fas fa-money-bill-wave"></i> Zelle</a></li>
+                        <li><a href="#" onclick="showTab('deposit')"><i class="fas fa-mobile-alt"></i> Mobile Deposit</a></li>
+                    </ul>
+                </nav>
+                <div class="user-menu">
+                    <div class="user-profile" onclick="showTab('profile')">
+                        <img src="profile.jpg" alt="Profile Photo" class="profile-img">
+                        <span>Jam Cassar</span>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" onclick="showTab('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="#" onclick="showTab('accounts')"><i class="fas fa-wallet"></i> My Accounts</a></li>
+                    <li><a href="#" onclick="showTab('transfer')"><i class="fas fa-exchange-alt"></i> Transfer Money</a></li>
+                    <li><a href="#" onclick="showTab('zelle')"><i class="fas fa-money-bill-wave"></i> Zelle Payments</a></li>
+                    <li><a href="#" onclick="showTab('deposit')"><i class="fas fa-mobile-alt"></i> Mobile Deposit</a></li>
+                    <li><a href="#" onclick="showTab('history')"><i class="fas fa-history"></i> Transaction History</a></li>
+                    <li><a href="#" onclick="showTab('cards')"><i class="fas fa-credit-card"></i> My Cards</a></li>
+                    <li><a href="#" onclick="showTab('profile')"><i class="fas fa-user"></i> Profile Settings</a></li>
+                    <li><a href="#" onclick="showTab('support')"><i class="fas fa-headset"></i> Customer Support</a></li>
+                </ul>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Dashboard Tab -->
+                <div id="dashboard" class="tab-content active">
+                    <div class="welcome-banner">
+                        <div class="welcome-text">
+                            <h2>Welcome back, Jam!</h2>
+                            <p>Here's what's happening with your accounts today.</p>
+                        </div>
+                        <div class="quick-actions">
+                            <button class="btn btn-primary" onclick="showTab('transfer')"><i class="fas fa-exchange-alt"></i> Transfer</button>
+                            <button class="btn btn-outline" onclick="showTab('deposit')"><i class="fas fa-mobile-alt"></i> Mobile Deposit</button>
+                        </div>
+                    </div>
+
+                    <div class="accounts-section">
+                        <h3>Your Accounts</h3>
+                        <div class="account-cards">
+                            <div class="account-card">
+                                <div class="account-header">
+                                    <span class="account-type">Checking Account</span>
+                                    <span class="account-number">•••• 6789</span>
+                                </div>
+                                <div class="account-balance">$12,456.78</div>
+                                <div class="account-actions">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTab('transfer')"><i class="fas fa-exchange-alt"></i> Transfer</button>
+                                    <button class="btn btn-secondary btn-sm" onclick="showTab('history')"><i class="fas fa-history"></i> History</button>
+                                </div>
+                            </div>
+                            <div class="account-card">
+                                <div class="account-header">
+                                    <span class="account-type">Savings Account</span>
+                                    <span class="account-number">•••• 1234</span>
+                                </div>
+                                <div class="account-balance">$45,789.23</div>
+                                <div class="account-actions">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTab('transfer')"><i class="fas fa-exchange-alt"></i> Transfer</button>
+                                    <button class="btn btn-secondary btn-sm" onclick="showTab('history')"><i class="fas fa-history"></i> History</button>
+                                </div>
+                            </div>
+                            <div class="account-card">
+                                <div class="account-header">
+                                    <span class="account-type">Credit Card</span>
+                                    <span class="account-number">•••• 4321</span>
+                                </div>
+                                <div class="account-balance">$1,234.56</div>
+                                <div class="account-actions">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTab('transfer')"><i class="fas fa-exchange-alt"></i> Pay</button>
+                                    <button class="btn btn-secondary btn-sm" onclick="showTab('history')"><i class="fas fa-history"></i> History</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="services-section">
+                        <h3>Quick Services</h3>
+                        <div class="service-cards">
+                            <div class="service-card" onclick="showTab('transfer')">
+                                <div class="service-icon"><i class="fas fa-exchange-alt"></i></div>
+                                <div class="service-title">Transfer Money</div>
+                            </div>
+                            <div class="service-card" onclick="showTab('zelle')">
+                                <div class="service-icon"><i class="fas fa-money-bill-wave"></i></div>
+                                <div class="service-title">Zelle Payments</div>
+                            </div>
+                            <div class="service-card" onclick="showTab('deposit')">
+                                <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                                <div class="service-title">Mobile Deposit</div>
+                            </div>
+                            <div class="service-card" onclick="showTab('cards')">
+                                <div class="service-icon"><i class="fas fa-credit-card"></i></div>
+                                <div class="service-title">Manage Cards</div>
+                            </div>
+                            <div class="service-card" onclick="showTab('profile')">
+                                <div class="service-icon"><i class="fas fa-user-cog"></i></div>
+                                <div class="service-title">Profile Settings</div>
+                            </div>
+                            <div class="service-card" onclick="showTab('support')">
+                                <div class="service-icon"><i class="fas fa-headset"></i></div>
+                                <div class="service-title">Customer Support</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accounts Tab -->
+                <div id="accounts" class="tab-content">
+                    <h2>My Accounts</h2>
+                    <div class="account-cards">
+                        <div class="account-card">
+                            <div class="account-header">
+                                <span class="account-type">Checking Account</span>
+                                <span class="account-number">•••• 6789</span>
+                            </div>
+                            <div class="account-balance">$12,456.78</div>
+                            <div class="account-details">
+                                <p><strong>Account Number:</strong> 9876543216789</p>
+                                <p><strong>Routing Number:</strong> 123456789</p>
+                                <p><strong>Opened:</strong> 05/15/2018</p>
+                            </div>
+                            <div class="account-actions">
+                                <button class="btn btn-primary btn-sm" onclick="showTab('transfer')"><i class="fas fa-exchange-alt"></i> Transfer</button>
+                                <button class="btn btn-secondary btn-sm" onclick="showTab('history')"><i class="fas fa-history"></i> History</button>
+                            </div>
+                        </div>
+                        <div class="account-card">
+                            <div class="account-header">
+                                <span class="account-type">Savings Account</span>
+                                <span class="account-number">•••• 1234</span>
+                            </div>
+                            <div class="account-balance">$45,789.23</div>
+                            <div class="account-details">
+                                <p><strong>Account Number:</strong> 9876543211234</p>
+                                <p><strong>Routing Number:</strong> 123456789</p>
+                                <p><strong>Opened:</strong> 05/15/2018</p>
+                                <p><strong>Interest Rate:</strong> 1.25% APY</p>
+                            </div>
+                            <div class="account-actions">
+                                <button class="btn btn-primary btn-sm" onclick="showTab('transfer')"><i class="fas fa-exchange-alt"></i> Transfer</button>
+                                <button class="btn btn-secondary btn-sm" onclick="showTab('history')"><i class="fas fa-history"></i> History</button>
+                            </div>
+                        </div>
+                        <div class="account-card">
+                            <div class="account-header">
+                                <span class="account-type">Credit Card</span>
+                                <span class="account-number">•••• 4321</span>
+                            </div>
+                            <div class="account-balance">$1,234.56</div>
+                            <div class="account-details">
+                                <p><strong>Card Number:</strong> 4111 •••• •••• 4321</p>
+                                <p><strong>Expires:</strong> 05/25</p>
+                                <p><strong>Credit Limit:</strong> $10,000.00</p>
+                                <p><strong>Available Credit:</strong> $8,765.44</p>
+                            </div>
+                            <div class="account-actions">
+                                <button class="btn btn-primary btn-sm" onclick="showTab('transfer')"><i class="fas fa-exchange-alt"></i> Pay</button>
+                                <button class="btn btn-secondary btn-sm" onclick="showTab('history')"><i class="fas fa-history"></i> History</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer Tab -->
+                <div id="transfer" class="tab-content">
+                    <h2>Transfer Money</h2>
+                    <div class="transfer-form">
+                        <form id="transferForm">
+                            <div class="form-group">
+                                <label for="fromAccount">From Account</label>
+                                <select id="fromAccount" class="form-control" required>
+                                    <option value="">Select an account</option>
+                                    <option value="checking">Checking •••• 6789 ($12,456.78)</option>
+                                    <option value="savings">Savings •••• 1234 ($45,789.23)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="toAccount">To Account</label>
+                                <select id="toAccount" class="form-control" required>
+                                    <option value="">Select an account</option>
+                                    <option value="checking">Checking •••• 6789</option>
+                                    <option value="savings">Savings •••• 1234</option>
+                                    <option value="external">External Account</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="externalAccountDetails" style="display: none;">
+                                <label for="externalAccount">External Account Details</label>
+                                <input type="text" id="externalAccount" class="form-control" placeholder="Account Number">
+                                <input type="text" id="externalRouting" class="form-control mt-2" placeholder="Routing Number">
+                                <input type="text" id="externalBank" class="form-control mt-2" placeholder="Bank Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="transferAmount">Amount</label>
+                                <input type="number" id="transferAmount" class="form-control" placeholder="0.00" min="0.01" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="transferMemo">Memo (Optional)</label>
+                                <input type="text" id="transferMemo" class="form-control" placeholder="Description">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">Transfer Money</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Zelle Tab -->
+                <div id="zelle" class="tab-content">
+                    <h2>Zelle Payments</h2>
+                    <div class="zelle-info">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Send and receive money with Zelle directly from your Sudo Credit Union account.
+                        </div>
+                        <div class="zelle-form">
+                            <form id="zelleForm">
+                                <div class="form-group">
+                                    <label for="zelleRecipient">Recipient's Email or Phone</label>
+                                    <input type="text" id="zelleRecipient" class="form-control" placeholder="Email or mobile number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="zelleAmount">Amount</label>
+                                    <input type="number" id="zelleAmount" class="form-control" placeholder="0.00" min="0.01" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="zelleAccount">From Account</label>
+                                    <select id="zelleAccount" class="form-control" required>
+                                        <option value="">Select an account</option>
+                                        <option value="checking">Checking •••• 6789 ($12,456.78)</option>
+                                        <option value="savings">Savings •••• 1234 ($45,789.23)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="zelleMemo">Memo (Optional)</label>
+                                    <input type="text" id="zelleMemo" class="form-control" placeholder="What's this for?">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send with Zelle</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Deposit Tab -->
+                <div id="deposit" class="tab-content">
+                    <h2>Mobile Check Deposit</h2>
+                    <div class="deposit-instructions">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Deposit checks anytime, anywhere with your mobile device.
+                        </div>
+                        <div class="deposit-steps">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Endorse Your Check</h4>
+                                    <p>Sign the back of your check and write "For mobile deposit only at Sudo CU" below your signature.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Enter Check Details</h4>
+                                    <p>Fill out the form below with your check information.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Take Photos</h4>
+                                    <p>Use your device's camera to capture clear images of the front and back of your check.</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h4>Submit Deposit</h4>
+                                    <p>Review and submit your deposit. Funds may take 1-2 business days to become available.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="deposit-form">
+                            <form id="mobileDepositForm">
+                                <div class="form-group">
+                                    <label for="depositAccount">To Account</label>
+                                    <select id="depositAccount" class="form-control" required>
+                                        <option value="">Select an account</option>
+                                        <option value="checking">Checking •••• 6789</option>
+                                        <option value="savings">Savings •••• 1234</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkAmount">Check Amount</label>
+                                    <input type="number" id="checkAmount" class="form-control" placeholder="0.00" min="0.01" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkFront">Front of Check</label>
+                                    <input type="file" id="checkFront" class="form-control" accept="image/*" capture="camera" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkBack">Back of Check</label>
+                                    <input type="file" id="checkBack" class="form-control" accept="image/*" capture="camera" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Deposit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction History Tab -->
+                <div id="history" class="tab-content">
+                    <h2>Transaction History</h2>
+                    <div class="transaction-filters">
+                        <div class="form-group">
+                            <label for="historyAccount">Account</label>
+                            <select id="historyAccount" class="form-control" onchange="filterTransactions()">
+                                <option value="all">All Accounts</option>
+                                <option value="checking">Checking •••• 6789</option>
+                                <option value="savings">Savings •••• 1234</option>
+                                <option value="credit">Credit Card •••• 4321</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="historyDate">Date Range</label>
+                            <select id="historyDate" class="form-control" onchange="filterTransactions()">
+                                <option value="30">Last 30 Days</option>
+                                <option value="60">Last 60 Days</option>
+                                <option value="90">Last 90 Days</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="customDateRange" style="display: none;">
+                            <label>Custom Range</label>
+                            <div class="date-range">
+                                <input type="date" id="startDate" class="form-control">
+                                <span>to</span>
+                                <input type="date" id="endDate" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="transaction-history">
+                        <table class="transaction-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Account</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>06/15/2023</td>
+                                    <td>Zelle to Sarah Johnson</td>
+                                    <td>Checking •••• 6789</td>
+                                    <td class="transaction-amount debit">-$250.00</td>
+                                    <td><span class="transaction-status status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>06/14/2023</td>
+                                    <td>Direct Deposit - Payroll</td>
+                                    <td>Checking •••• 6789</td>
+                                    <td class="transaction-amount credit">+$3,456.78</td>
+                                    <td><span class="transaction-status status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>06/12/2023</td>
+                                    <td>Transfer to Savings</td>
+                                    <td>Savings •••• 1234</td>
+                                    <td class="transaction-amount credit">+$500.00</td>
+                                    <td><span class="transaction-status status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>06/12/2023</td>
+                                    <td>Transfer from Checking</td>
+                                    <td>Checking •••• 6789</td>
+                                    <td class="transaction-amount debit">-$500.00</td>
+                                    <td><span class="transaction-status status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>06/10/2023</td>
+                                    <td>Amazon.com</td>
+                                    <td>Credit Card •••• 4321</td>
+                                    <td class="transaction-amount debit">-$89.99</td>
+                                    <td><span class="transaction-status status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>06/08/2023</td>
+                                    <td>Mobile Check Deposit</td>
+                                    <td>Checking •••• 6789</td>
+                                    <td class="transaction-amount credit">+$1,200.00</td>
+                                    <td><span class="transaction-status status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>06/05/2023</td>
+                                    <td>Starbucks</td>
+                                    <td>Credit Card •••• 4321</td>
+                                    <td class="transaction-amount debit">-$5.75</td>
+                                    <td><span class="transaction-status status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>06/01/2023</td>
+                                    <td>Electric Bill - AutoPay</td>
+                                    <td>Checking •••• 6789</td>
+                                    <td class="transaction-amount debit">-$125.67</td>
+                                    <td><span class="transaction-status status-completed">Completed</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ATM Cards Tab -->
+                <div id="cards" class="tab-content">
+                    <h2>My Cards</h2>
+                    <div class="card-management">
+                        <div class="atm-card">
+                            <div class="card-header">
+                                <div class="card-logo">Sudo Credit Union</div>
+                                <div class="card-type">Platinum</div>
+                            </div>
+                            <div class="card-number">•••• •••• •••• 4321</div>
+                            <div class="card-details">
+                                <div class="card-holder">
+                                    <span>Card Holder</span>
+                                    JAM CASSAR
+                                </div>
+                                <div class="card-expiry">
+                                    <span>Expires</span>
+                                    05/25
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary"><i class="fas fa-lock"></i> Lock Card</button>
+                            <button class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Request New Card</button>
+                            <button class="btn btn-secondary"><i class="fas fa-cog"></i> Card Settings</button>
+                            <button class="btn btn-secondary"><i class="fas fa-eye-slash"></i> Hide Card Number</button>
+                        </div>
+                        <div class="card-details-section">
+                            <h3>Card Details</h3>
+                            <div class="detail-item">
+                                <span class="detail-label">Card Status:</span>
+                                <span class="detail-value active">Active</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Card Number:</span>
+                                <span class="detail-value">4111 2233 4455 4321</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Expiration Date:</span>
+                                <span class="detail-value">05/2025</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">CVV:</span>
+                                <span class="detail-value">•••</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Daily Limit:</span>
+                                <span class="detail-value">$2,500.00</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Linked Account:</span>
+                                <span class="detail-value">Credit Card •••• 4321</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Tab -->
+                <div id="profile" class="tab-content">
+                    <h2>Profile Settings</h2>
+                    <div class="profile-section">
+                        <div class="profile-header">
+                            <div class="profile-photo">
+                                <img src="profile.jpg" alt="Profile Photo" class="profile-img-large">
+                                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('photoUpload').click()"><i class="fas fa-camera"></i> Change Photo</button>
+                                <input type="file" id="photoUpload" style="display: none;" accept="image/*">
+                            </div>
+                            <div class="profile-info">
+                                <h3>Jam Cassar</h3>
+                                <p>Member since May 2018</p>
+                                <div class="verification-status">
+                                    <i class="fas fa-check-circle verified"></i> Identity Verified
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <form id="profileForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="firstName">First Name</label>
+                                        <input type="text" id="firstName" class="form-control" value="Jam" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name</label>
+                                        <input type="text" id="lastName" class="form-control" value="Cassar" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" class="form-control" value="jam.cassar@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" class="form-control" value="(555) 123-4567" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" id="address" class="form-control" value="123 Main St" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="city">City</label>
+                                        <input type="text" id="city" class="form-control" value="Anytown" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="state">State</label>
+                                        <select id="state" class="form-control" required>
+                                            <option value="CA">California</option>
+                                            <option value="NY" selected>New York</option>
+                                            <option value="TX">Texas</option>
+                                            <!-- More states would be here -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="zip">ZIP Code</label>
+                                        <input type="text" id="zip" class="form-control" value="10001" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="security-settings">
+                            <h3>Security Settings</h3>
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <h4>Password</h4>
+                                    <p>Last changed 3 months ago</p>
+                                </div>
+                                <button class="btn btn-secondary" onclick="showChangePassword()">Change Password</button>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <h4>Two-Factor Authentication</h4>
+                                    <p>Enabled (SMS)</p>
+                                </div>
+                                <button class="btn btn-secondary">Manage 2FA</button>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <h4>Login Alerts</h4>
+                                    <p>Enabled for all logins</p>
+                                </div>
+                                <button class="btn btn-secondary">Manage Alerts</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Tab -->
+                <div id="support" class="tab-content">
+                    <h2>Customer Support</h2>
+                    <div class="support-options">
+                        <div class="support-card" onclick="showContactModal()">
+                            <div class="support-icon"><i class="fas fa-phone-alt"></i></div>
+                            <h3>Call Us</h3>
+                            <p>24/7 customer support</p>
+                        </div>
+                        <div class="support-card" onclick="showChatModal()">
+                            <div class="support-icon"><i class="fas fa-comments"></i></div>
+                            <h3>Live Chat</h3>
+                            <p>Available 8am-10pm EST</p>
+                        </div>
+                        <div class="support-card" onclick="showMessageModal()">
+                            <div class="support-icon"><i class="fas fa-envelope"></i></div>
+                            <h3>Send Message</h3>
+                            <p>We'll respond within 24 hours</p>
+                        </div>
+                    </div>
+                    <div class="faq-section">
+                        <h3>Frequently Asked Questions</h3>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>How do I reset my password?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>To reset your password, click on "Forgot Password" on the login page. You'll receive an email with instructions to create a new password. If you don't see the email, check your spam folder.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>What are your transfer limits?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Our standard transfer limits are $5,000 per day for external transfers and $10,000 per day for internal transfers. You can request higher limits by contacting customer support.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>How do I set up Zelle?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Zelle is already enabled on your account! Just go to the Zelle tab, enter the recipient's email or phone number, the amount, and confirm the transfer. The first time you send to a new recipient, you may need to verify the details.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>What should I do if my card is lost or stolen?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Immediately go to the "My Cards" section and click "Lock Card" to prevent unauthorized use. Then call our 24/7 support line at 1-800-SUDO-CU to report it. We'll cancel the card and send you a new one.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Modals -->
+    <div class="modal" id="forgotPasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Forgot Password</h3>
+                <button class="close-modal" onclick="closeModal('forgotPasswordModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="forgotPasswordForm">
+                    <div class="form-group">
+                        <label for="forgotEmail">Email Address</label>
+                        <input type="email" id="forgotEmail" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Reset Password</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <p>Remember your password? <a href="#" onclick="showLogin()">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create an Account</h3>
+                <button class="close-modal" onclick="closeModal('registerModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="regFirstName">First Name</label>
+                            <input type="text" id="regFirstName" class="form-control" placeholder="First name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regLastName">Last Name</label>
+                            <input type="text" id="regLastName" class="form-control" placeholder="Last name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email Address</label>
+                        <input type="email" id="regEmail" class="form-control" placeholder="Email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhone">Phone Number</label>
+                        <input type="tel" id="regPhone" class="form-control" placeholder="Phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Password</label>
+                        <input type="password" id="regPassword" class="form-control" placeholder="Create password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Confirm Password</label>
+                        <input type="password" id="regConfirmPassword" class="form-control" placeholder="Confirm password" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <p>Already have an account? <a href="#" onclick="showLogin()">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="changePasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Change Password</h3>
+                <button class="close-modal" onclick="closeModal('changePasswordModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" class="form-control" placeholder="Enter new password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmNewPassword">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" class="form-control" placeholder="Confirm new password" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Update Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Contact Customer Support</h3>
+                <button class="close-modal" onclick="closeModal('contactModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="contact-info">
+                    <p><i class="fas fa-phone-alt"></i> <strong>Phone:</strong> 1-800-SUDO-CU (1-800-783-6288)</p>
+                    <p><i class="fas fa-clock"></i> <strong>Hours:</strong> 24/7</p>
+                    <p><i class="fas fa-envelope"></i> <strong>Email:</strong> support@sudocu.com</p>
+                </div>
+                <div class="emergency-info">
+                    <h4>For lost or stolen cards:</h4>
+                    <p><i class="fas fa-credit-card"></i> <strong>Card Support:</strong> 1-800-555-0199 (24/7)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="chatModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Live Chat Support</h3>
+                <button class="close-modal" onclick="closeModal('chatModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message agent">
+                            <p>Hello! Thank you for contacting Sudo Credit Union. How can I help you today?</p>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="chatInput" class="form-control" placeholder="Type your message...">
+                        <button class="btn btn-primary" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="messageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Send Us a Message</h3>
+                <button class="close-modal" onclick="closeModal('messageModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="supportMessageForm">
+                    <div class="form-group">
+                        <label for="messageSubject">Subject</label>
+                        <select id="messageSubject" class="form-control" required>
+                            <option value="">Select a subject</option>
+                            <option value="account">Account Question</option>
+                            <option value="card">Card Issue</option>
+                            <option value="loan">Loan Inquiry</option>
+                            <option value="transfer">Transfer Issue</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="messageContent">Message</label>
+                        <textarea id="messageContent" class="form-control" rows="5" placeholder="Please describe your issue..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
